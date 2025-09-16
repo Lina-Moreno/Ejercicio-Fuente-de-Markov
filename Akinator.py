@@ -1,5 +1,6 @@
 # Probabilidades de ocurrencia de las letras en español (porcentaje)
-# Se basa en una aproximación
+# Se basa en una aproximación puede mejorar con un gran archivo de texto en español y calcaulando las probabilidades
+# para cada letra. 
 prob_letras = {
     'a': 11.96, 'e': 14.53, 'o': 8.68, 's': 7.84, 'i': 7.64,
     'l': 7.23, 'r': 6.87, 'n': 6.83, 'd': 4.96, 'u': 4.79,
@@ -11,7 +12,9 @@ prob_letras = {
 
 # Cadena de Markov de primer orden (probabilidades de transición)
 # Un diccionario anidado: {'letra_anterior': {'siguiente_letra': probabilidad}}
-# Estos datos son una simplificación para el ejemplo.
+# Estos datos son una simplificación para el ejemplo, si queremos que el programa sea "más inteligente" tendriamos que
+# analizar más datos con un gran archivo de texto en español por ejemplo. 
+# esto para optener todas las posibles combinaciones de letras con sus probabilidades.
 transicion_letras = {
     'a': {'l': 0.2, 's': 0.15, 'c': 0.1, 'n': 0.1, 'r': 0.1, 'd': 0.05, 'g': 0.05},
     'e': {'s': 0.2, 'r': 0.15, 'l': 0.1, 'd': 0.1, 'c': 0.05, 't': 0.05, 'n': 0.05},
