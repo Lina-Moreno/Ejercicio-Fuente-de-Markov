@@ -1,34 +1,50 @@
-# Probabilidades de ocurrencia de las letras en español (porcentaje)
-# Se basa en una aproximación puede mejorar con un gran archivo de texto en español y calcaulando las probabilidades
-# para cada letra. 
+#Probabilidad de frecuencia de letras en español
 prob_letras = {
-    'a': 11.96, 'e': 14.53, 'o': 8.68, 's': 7.84, 'i': 7.64,
-    'l': 7.23, 'r': 6.87, 'n': 6.83, 'd': 4.96, 'u': 4.79,
-    't': 4.19, 'c': 3.42, 'p': 2.76, 'm': 2.65, 'y': 2.37,
-    'g': 1.13, 'b': 1.05, 'h': 0.96, 'q': 0.90, 'f': 0.70,
-    'v': 0.61, 'j': 0.52, 'ñ': 0.31, 'z': 0.28, 'x': 0.20,
-    'k': 0.12, 'w': 0.04
+    'a': 0.1196, 'b': 0.0092, 'c': 0.0292, 'd': 0.0687, 'e': 0.1678,
+    'f': 0.0052, 'g': 0.0073, 'h': 0.0089, 'i': 0.0415, 'j': 0.0030,
+    'k': 0.0001, 'l': 0.0837, 'm': 0.0212, 'n': 0.0701, 'ñ': 0.0029,
+    'o': 0.0869, 'p': 0.0276, 'q': 0.0153, 'r': 0.0494, 's': 0.0788,
+    't': 0.0331, 'u': 0.0480, 'v': 0.0039, 'w': 0.0001, 'x': 0.0006,
+    'y': 0.0154, 'z': 0.0015
 }
 
-# Cadena de Markov de primer orden (probabilidades de transición)
-# Un diccionario anidado: {'letra_anterior': {'siguiente_letra': probabilidad}}
-# Estos datos son una simplificación para el ejemplo, si queremos que el programa sea "más inteligente" tendriamos que
-# analizar más datos con un gran archivo de texto en español por ejemplo. 
-# esto para optener todas las posibles combinaciones de letras con sus probabilidades.
+#Probabilidad letra inicial de una palabra de 4 letras
+prob_inicio = {
+    'a': 0.12, 'b': 0.08, 'c': 0.12, 'd': 0.08, 'e': 0.06, 
+    'f': 0.04, 'g': 0.03, 'h': 0.03, 'i': 0.02, 'j': 0.02,
+    'l': 0.08, 'm': 0.10, 'n': 0.06, 'o': 0.04, 'p': 0.08,
+    'r': 0.06, 's': 0.08, 't': 0.08, 'u': 0.02, 'v': 0.04   
+}
+
+#Probabilidad letra final en una palabra de 4 letras
+prob_final = {
+    'a': 0.28, 'e': 0.15, 'o': 0.25, 's': 0.18, 'r': 0.08,  
+    'n': 0.04, 't': 0.02                                  
+}
+
+# Diccionario anidado para representar cadena de Markov de primer orden
 transicion_letras = {
-    'a': {'l': 0.2, 's': 0.15, 'c': 0.1, 'n': 0.1, 'r': 0.1, 'd': 0.05, 'g': 0.05},
-    'e': {'s': 0.2, 'r': 0.15, 'l': 0.1, 'd': 0.1, 'c': 0.05, 't': 0.05, 'n': 0.05},
-    'i': {'n': 0.2, 'c': 0.15, 's': 0.1, 'd': 0.1, 'r': 0.05, 'm': 0.05},
-    'o': {'s': 0.2, 'n': 0.15, 'l': 0.1, 'c': 0.1, 'r': 0.05, 'm': 0.05},
-    'u': {'e': 0.8, 'n': 0.1, 'i': 0.1},
-    'c': {'a': 0.4, 'o': 0.3, 'e': 0.2, 'u': 0.1},
+    'a': {'r': 0.25, 'n': 0.20, 'd': 0.15, 's': 0.15, 'l': 0.12, 'c': 0.08, 'm': 0.05},
+    'b': {'a': 0.40, 'e': 0.25, 'i': 0.20, 'o': 0.15},
+    'c': {'a': 0.35, 'o': 0.30, 'e': 0.20, 'i': 0.15},
+    'd': {'a': 0.30, 'e': 0.35, 'o': 0.25, 'i': 0.10},
+    'e': {'s': 0.25, 'n': 0.20, 'r': 0.20, 't': 0.15, 'l': 0.12, 'm': 0.08},
+    'f': {'a': 0.30, 'e': 0.25, 'i': 0.25, 'o': 0.20},
+    'g': {'a': 0.40, 'o': 0.30, 'u': 0.30},
+    'h': {'a': 0.50, 'o': 0.30, 'i': 0.20},
+    'i': {'n': 0.25, 's': 0.20, 'r': 0.15, 'd': 0.15, 'c': 0.12, 't': 0.10, 'v': 0.03},
+    'j': {'a': 0.50, 'o': 0.30, 'u': 0.20},
+    'l': {'a': 0.35, 'e': 0.25, 'o': 0.20, 'i': 0.15, 'u': 0.05},
+    'm': {'a': 0.35, 'e': 0.30, 'o': 0.20, 'i': 0.15},
+    'n': {'a': 0.25, 'e': 0.20, 'o': 0.20, 'i': 0.15, 't': 0.15, 'd': 0.05},
+    'o': {'r': 0.25, 's': 0.20, 'n': 0.18, 'c': 0.12, 't': 0.10, 'd': 0.08, 'm': 0.07},
+    'p': {'a': 0.35, 'e': 0.25, 'o': 0.25, 'i': 0.15},
     'q': {'u': 1.0},
-    's': {'e': 0.4, 'a': 0.3, 'o': 0.2, 'i': 0.1},
-    'ñ': {'a': 0.5, 'e': 0.3, 'o': 0.2},
-    'p': {'a': 0.5, 'o': 0.3, 'e': 0.2},
-    't': {'a': 0.6, 'e': 0.3, 'o': 0.1},
-    'l': {'a': 0.5, 'o': 0.3, 'e': 0.2},
-    'm': {'a': 0.4, 'e': 0.3, 'o': 0.2, 'i': 0.1}
+    'r': {'a': 0.30, 'e': 0.25, 'o': 0.20, 'i': 0.15, 'u': 0.10},
+    's': {'a': 0.20, 'e': 0.20, 'o': 0.20, 'i': 0.15, 'u': 0.15, 't': 0.10},
+    't': {'a': 0.30, 'e': 0.25, 'o': 0.25, 'i': 0.15, 'u': 0.05},
+    'u': {'n': 0.25, 'r': 0.20, 's': 0.20, 'e': 0.15, 'l': 0.12, 'm': 0.08},
+    'v': {'a': 0.40, 'e': 0.25, 'i': 0.20, 'o': 0.15}
 }
 
 # Función para obtener la mejor letra basándose en un patrón
@@ -47,28 +63,42 @@ def obtener_mejor_letra(patron, letras_adivinadas):
                 letra_anterior = patron[i-1]
                 if letra_anterior in transicion_letras:
                     for letra, prob in transicion_letras[letra_anterior].items():
-                        if letra not in letras_adivinadas and prob > mejor_prob:
-                            mejor_prob = prob
-                            mejor_letra = letra
+                        if letra not in letras_adivinadas:
+                            prob_ajustada = prob
+                            if i == 3:  # última posición
+                                prob_ajustada *= prob_final.get(letra, 0.3)
+                            if prob_ajustada > mejor_prob:
+                                mejor_prob = prob_ajustada
+                                mejor_letra = letra
+                if mejor_letra:
+                    return mejor_letra
     
     # Si no se puede usar Markov, usamos la probabilidad general más alta.
-    if mejor_letra is None:
-        letras_disponibles = [letra for letra in prob_letras.keys() if letra not in letras_adivinadas]
-        if letras_disponibles:
-            mejor_letra = sorted(letras_disponibles, key=lambda l: prob_letras[l], reverse=True)[0]
-    
+    letras_disponibles = [l for l in prob_letras.keys() if l not in letras_adivinadas]
+    for i in range(len(patron)):
+        if patron[i] == "_":
+            for letra in letras_disponibles:
+                prob_base = prob_letras[letra]
+                if i == 0:
+                    prob_base *= prob_inicio.get(letra, 0.1)
+                elif i == 3:
+                    prob_base *= prob_final.get(letra, 0.1)
+                if prob_base > mejor_prob:
+                    mejor_prob = prob_base
+                    mejor_letra = letra
+                    
     return mejor_letra
 
 
 def adivinar_ahorcado():
-    print("¡Piensa en una palabra de 4 letras! Yo intentaré adivinarla.")
+    print("¡Piensa en una palabra real de 4 letras en español! Yo intentaré adivinarla.")
     
     patron = ["_"] * 4
     letras_adivinadas = set()
     intentos = 0
     
-    # Aquí es donde cambias el número máximo de intentos
-    while "_" in patron and intentos < 25:
+    #Máximo de intentos
+    while "_" in patron and intentos < 30:
         intentos += 1
         
         proxima_letra = obtener_mejor_letra(patron, letras_adivinadas)
